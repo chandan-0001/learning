@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Science Course | Inclusive Learning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #4338ca;
+            --secondary: #10b981;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #94a3b8;
+            --dark-gray: #64748b;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Header */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary);
+        }
+        
+        .cta-button {
+            background-color: var(--primary);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .cta-button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .secondary-button {
+            background-color: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            font-weight: 500;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+        
+        .secondary-button:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Course Highlights */
+        .highlights {
+            padding: 4rem 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title h2 {
+            font-size: 2rem;
+            color: var(--dark);
+        }
+        
+        .highlight-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        /* Course Details */
+        .course-details {
+            padding: 4rem 0;
+            background-color: #f8fafc;
+        }
+        
+        .details-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+        
+        .details-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .details-content p {
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+        }
+        
+        .features-list {
+            margin-bottom: 2rem;
+        }
+        
+        .features-list li {
+            margin-bottom: 0.8rem;
+            list-style: none;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .features-list li::before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+        
+        .instructor {
+            display: flex;
+            align-items: center;
+            margin-top: 2rem;
+        }
+        
+        .instructor-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .instructor-info h4 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .instructor-info p {
+            color: var(--gray);
+            margin: 0;
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+        
+        .stars {
+            color: #fbbf24;
+            margin-right: 0.5rem;
+        }
+        
+        .rating-count {
+            color: var(--gray);
+        }
+        
+        .details-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Curriculum */
+        .curriculum {
+            padding: 4rem 0;
+        }
+        
+        .accordion {
+            margin-top: 2rem;
+        }
+        
+        .accordion-item {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .accordion-header {
+            background-color: white;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .accordion-header:hover {
+            background-color: #f8fafc;
+        }
+        
+        .accordion-content {
+            background-color: white;
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        
+        .accordion-content-inner {
+            padding: 1.5rem 0;
+        }
+        
+        .module-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        
+        .module-item:last-child {
+            border-bottom: none;
+        }
+        
+        .module-duration {
+            color: var(--gray);
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            padding: 4rem 0;
+            background-color: #f8fafc;
+        }
+        
+        .testimonial-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .testimonial-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            color: var(--dark-gray);
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 0.2rem;
+        }
+        
+        .author-info p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 4rem 0;
+        }
+        
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .pricing-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+        
+        .pricing-card.popular {
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+        
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1rem 0;
+            color: var(--dark);
+        }
+        
+        .price span {
+            font-size: 1rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        .pricing-features {
+            margin: 2rem 0;
+        }
+        
+        .pricing-features li {
+            margin-bottom: 0.8rem;
+            list-style: none;
+            color: var(--dark-gray);
+        }
+        
+        .pricing-features li::before {
+            content: "✓";
+            color: var(--secondary);
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+        
+        /* FAQ */
+        .faq {
+            padding: 4rem 0;
+            background-color: #f8fafc;
+        }
+        
+        /* Registration Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-header h2 {
+            color: var(--primary);
+        }
+        
+        .close-modal {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+        
+        .close-modal:hover {
+            color: var(--dark);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--gray);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        .form-submit:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 0 2rem;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            display: inline-block;
+        }
+        
+        .footer-logo span {
+            color: var(--secondary);
+        }
+        
+        .footer-about p {
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .social-links a {
+            color: white;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+        
+        .social-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .footer-links h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+        }
+        
+        .newsletter h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+        
+        .newsletter p {
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .newsletter-form button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 1.2rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .newsletter-form button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .details-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .details-image {
+                order: -1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cta-button, .secondary-button {
+                width: 100%;
+                text-align: center;
+            }
+            
+        }
+        .cta-button {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.cta-button a {
+    display: inline-block;
+    padding: 12px 24px;
+    /* background-color: #3a86ff; Your primary blue color */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cta-button a:hover {
+    background-color: #2a75e6; /* Slightly darker blue on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.cta-button a:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+}
+
+.cta-button a:focus {
+    outline: 2px solid rgba(58, 134, 255, 0.5);
+    outline-offset: 2px;
+}
+        
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="#" class="logo">Inclusive Learning<span></span></a>
+            
+            <!-- <nav>
+                <ul>
+                    <a href="#">Courses</a>
+                     <li><a href="/index.html">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contact</a></li>  
+                </ul>
+            </nav> -->
+            
+            <div class="cta-button" ><a href="/index.html">Home</a></div>
+            <div class="mobile-menu">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+          <h1 id="course-title">Loading Course...</h1>
+          <p id="course-description">Please wait while we load the course description...</p>
+      
+          <div class="hero-buttons">
+            <a href="#" class="cta-button enroll-btn">Enroll Now</a>
+            <a href="#" class="secondary-button">Download Syllabus</a>
+          </div>
+        </div>
+      </section>
+    
+    <!-- Course Highlights -->
+    <section class="highlights">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose This Course?</h2>
+            </div>
+            
+            <div class="highlight-cards">
+                <div class="card">
+                    <i class="fas fa-laptop-code"></i>
+                    <h3>Hands-on Projects</h3>
+                    <p>Work on real-world projects and build a portfolio that showcases your skills to employers.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <h3>Expert Instructors</h3>
+                    <p>Learn from industry professionals with years of experience in data science and machine learning.</p>
+                </div>
+                
+                <div class="card">
+                    <i class="fas fa-briefcase"></i>
+                    <h3>Career Support</h3>
+                    <p>Get resume reviews, interview preparation, and job placement assistance upon completion.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Course Details -->
+    <section class="course-details">
+        <div class="container details-container">
+            <div class="details-content">
+                <h2>About This Course</h2>
+                <p>Our Data Science Masters Course is designed to take you from beginner to job-ready data scientist in just 6 months. You'll master Python, statistics, machine learning, deep learning, and data visualization through hands-on projects.</p>
+                
+                <ul class="features-list">
+                    <li>Comprehensive curriculum covering all essential data science topics</li>
+                    <li>300+ hours of learning content</li>
+                    <li>10+ real-world projects</li>
+                    <li>1:1 mentorship sessions</li>
+                    <li>Certificate of completion</li>
+                </ul>
+                
+                <div class="instructor">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Instructor" class="instructor-img">
+                    <div class="instructor-info">
+                        <h4>Dr. Rajesh Kumar</h4>
+                        <p>Lead Data Scientist</p>
+                        <div class="rating">
+                            <div class="stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="rating-count">4.7 (1,245 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="details-image">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Data Science Course">
+            </div>
+        </div>
+    </section>
+    
+    <!-- Curriculum -->
+    <section class="curriculum">
+        <div class="container">
+            <div class="section-title">
+                <h2>Course Curriculum</h2>
+                <p>Comprehensive modules covering all aspects of data science</p>
+            </div>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Module 1: Python for Data Science</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="module-item">
+                                <span>Introduction to Python</span>
+                                <span class="module-duration">2 weeks</span>
+                            </div>
+                            <div class="module-item">
+                                <span>NumPy and Pandas</span>
+                                <span class="module-duration">2 weeks</span>
+                            </div>
+                            <div class="module-item">
+                                <span>Data Visualization with Matplotlib and Seaborn</span>
+                                <span class="module-duration">1 week</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Module 2: Statistics for Data Science</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="module-item">
+                                <span>Descriptive Statistics</span>
+                                <span class="module-duration">1 week</span>
+                            </div>
+                            <div class="module-item">
+                                <span>Probability Distributions</span>
+                                <span class="module-duration">1 week</span>
+                            </div>
+                            <div class="module-item">
+                                <span>Hypothesis Testing</span>
+                                <span class="module-duration">2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Module 3: Machine Learning</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <div class="module-item">
+                                <span>Supervised Learning Algorithms</span>
+                                <span class="module-duration">3 weeks</span>
+                            </div>
+                            <div class="module-item">
+                                <span>Unsupervised Learning</span>
+                                <span class="module-duration">2 weeks</span>
+                            </div>
+                            <div class="module-item">
+                                <span>Model Evaluation and Tuning</span>
+                                <span class="module-duration">2 weeks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Students Say</h2>
+                <p>Hear from our alumni who transformed their careers</p>
+            </div>
+            
+            <div class="testimonial-cards">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "This course completely changed my career trajectory. Within 3 months of completing the program, I landed a job as a Data Analyst at a Fortune 500 company."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Student">
+                        <div class="author-info">
+                            <h4>Priya Sharma</h4>
+                            <p>Data Analyst at TechCorp</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The hands-on projects were incredibly valuable. I could immediately apply what I learned to my current job and got promoted within 6 months."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Student">
+                        <div class="author-info">
+                            <h4>Rahul Patel</h4>
+                            <p>Senior Data Scientist</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        "The instructors were knowledgeable and supportive. The career services helped me negotiate a 40% higher salary than my previous job."
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/63.jpg" alt="Student">
+                        <div class="author-info">
+                            <h4>Ananya Gupta</h4>
+                            <p>Machine Learning Engineer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Pricing -->
+    <section class="pricing">
+        <div class="container">
+            <div class="section-title">
+                <h2>Pricing Options</h2>
+                <p>Choose the plan that works best for you</p>
+            </div>
+            
+            <div class="pricing-cards">
+                <div class="pricing-card">
+                    <h3>Self-Paced</h3>
+                    <div class="price">₹15,999 <span>/ one-time</span></div>
+                    <ul class="pricing-features">
+                        <li>Lifetime access to all course materials</li>
+                        <li>10+ hands-on projects</li>
+                        <li>Community support</li>
+                        <li>Certificate of completion</li>
+                    </ul>
+                    <a href="#" class="secondary-button enroll-btn">Enroll Now</a>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Mentor-Led</h3>
+                    <div class="price">₹29,999 <span>/ one-time</span></div>
+                    <ul class="pricing-features">
+                        <li>Everything in Self-Paced plus:</li>
+                        <li>Weekly 1:1 mentorship sessions</li>
+                        <li>Personalized project feedback</li>
+                        <li>Career coaching</li>
+                        <li>Job placement assistance</li>
+                    </ul>
+                    <a href="#" class="cta-button enroll-btn">Enroll Now</a>
+                </div>
+                
+                <div class="pricing-card">
+                    <h3>Installment Plan</h3>
+                    <div class="price">₹5,999 <span>/ month</span></div>
+                    <ul class="pricing-features">
+                        <li>Pay in 6 monthly installments</li>
+                        <li>Everything in Mentor-Led plan</li>
+                        <li>Flexible payment options</li>
+                        <li>No cost EMI available</li>
+                    </ul>
+                    <a href="#" class="secondary-button enroll-btn">Enroll Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- FAQ -->
+    <section class="faq">
+        <div class="container">
+            <div class="section-title">
+                <h2>Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>Who is this course for?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>This course is designed for anyone interested in becoming a data scientist, including complete beginners. If you have some programming or math background, you'll progress faster, but we cover all the fundamentals you need.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>What are the prerequisites?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>The only prerequisites are basic computer skills and high school level math. We start from the very basics of programming and statistics before moving to advanced topics.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <span>How much time should I dedicate weekly?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-content-inner">
+                            <p>We recommend dedicating 10-15 hours per week to complete the course in 6 months. The self-paced option allows you to move faster or slower as needed.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Registration Modal -->
+    <div class="modal" id="registrationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Register for the Course</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <form action="email (1).php" id="registrationForm" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="offer">Course offer by LMS</label>
+                    <select id="offer" name="offer" class="form-control" required>
+                        <option value="">-- Select Course --</option>
+                        <option value="Basic-Math-Fundamentals">Basic Math Fundamentals</option>
+                        <option value="Algebra-Made-Accessible">Algebra Made Accessible</option>
+                        <option value="Reading-Comprehension">Reading Comprehension</option>
+                        <option value="Writing-Effective-Essays">Writing Effective Essays</option>
+                        <option value="Critical-Thinking">Critical Thinking</option>
+                        <option value="Introduction-to-Statistics">Introduction to Statistics</option>
+                        <option value="Introduction-to-Data-Science">Introduction to Data Science</option>
+                        <option value="Introduction-to-Python">Introduction to Python</option>
+                        <option value="Introduction-to-Data-Analysis">Introduction to Data Analysis</option>
+                        <option value="Introduction-to-Data-Visualization">Introduction to Data Visualization</option>
+                        <option value="Introduction-to-Data-Science">Introduction to Data Science</option>
+                        <option value="Introduction-to-Data-Science-in-Python">Introduction to Data Science in Python</option>
+                        <option value="Introduction-to-Data-Science-in-R">Introduction to Data Science in R</option>
+
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="course">Select Course</label>
+                    <select id="course" name="course" class="form-control" required>
+                        <option value="">-- Select Course --</option>
+                        <option value="self-paced">Self-Paced (₹15,999)</option>
+                        <option value="mentor-led">Mentor-Led (₹29,999)</option>
+                        <option value="installment">Installment Plan (₹5,999/month)</option>
+                        <!-- <option value="Contact Koushal">Contact Koushal Yadav</option> -->
+                    </select>
+                </div>
+                <button type="submit" class="form-submit">Submit Registration</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-about">
+                    <a href="#" class="footer-logo">Inclusive <span>Learning</span></a>
+                    <p>Transforming careers through industry-relevant education. Join thousands of students who've changed their lives with our courses.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Courses</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Courses</h3>
+                    <ul>
+                        <li><a href="#">Data Science</a></li>
+                        <li><a href="#">Web Development</a></li>
+                        <li><a href="#">Mobile Development</a></li>
+                        <li><a href="#">Cloud Computing</a></li>
+                        <li><a href="#">Cybersecurity</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Refund Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div class="newsletter">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to get updates on new courses and offers.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Inclusive Learning. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Accordion functionality
+        document.querySelectorAll('.accordion-header').forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                const content = header.nextElementSibling;
+                const icon = header.querySelector('i');
+                
+                // Close all other items
+                document.querySelectorAll('.accordion-item').forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove('active');
+                        otherItem.querySelector('.accordion-content').style.maxHeight = null;
+                        otherItem.querySelector('i').className = 'fas fa-chevron-down';
+                    }
+                });
+                
+                // Toggle current item
+                item.classList.toggle('active');
+                
+                if (item.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.className = 'fas fa-chevron-up';
+                } else {
+                    content.style.maxHeight = null;
+                    icon.className = 'fas fa-chevron-down';
+                }
+            });
+        });
+        
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu').addEventListener('click', () => {
+            const nav = document.querySelector('nav ul');
+            if (nav.style.display === 'flex') {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('registrationModal');
+        const enrollBtns = document.querySelectorAll('.enroll-btn');
+        const closeModal = document.querySelector('.close-modal');
+        
+        // Open modal when enroll buttons are clicked
+        enrollBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+        
+        // Close modal when X is clicked
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+        
+        // Form submission
+        document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const form = e.target;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Processing...';
+    
+    try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Changed to port 3001 to match server
+        const response = await fetch('http://localhost:3001/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (!response.ok) {
+            throw new Error(result.message || 'Registration failed');
+        }
+        
+        alert(result.message);
+        modal.style.display = 'none';
+        form.reset();
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message || 'Registration failed. Please try again later.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Registration';
+    }
+});
+        
+        // Responsive nav menu
+        window.addEventListener('resize', () => {
+            const nav = document.querySelector('nav ul');
+            if (window.innerWidth > 768) {
+                nav.style.display = 'flex';
+            } else {
+                nav.style.display = 'none';
+            }
+        });
+        
+        // Initialize nav menu display
+        window.addEventListener('DOMContentLoaded', () => {
+            const nav = document.querySelector('nav ul');
+            if (window.innerWidth <= 768) {
+                nav.style.display = 'none';
+            } else {
+                nav.style.display = 'flex';
+            }
+        });
+
+
+        const courseContent = {
+    // Mathematics
+    "basic-math": {
+      title: "Basic Math Fundamentals",
+      description: "Master foundational math skills with adaptive lessons tailored to your learning style. This course covers addition, subtraction, multiplication, division, and problem-solving techniques."
+    },
+    "algebra": {
+      title: "Algebra Made Accessible",
+      description: "Learn algebraic concepts through multi-sensory approaches and real-world applications."
+    },
+    "geometry": {
+      title: "Geometry for All",
+      description: "Explore shapes and spatial relationships with tactile models and audio descriptions."
+    },
+
+    // Language Arts
+    "reading": {
+      title: "Reading Comprehension",
+      description: "Develop reading skills with text-to-speech support and interactive comprehension exercises."
+    },
+    "creative-writing": {
+      title: "Creative Writing",
+      description: "Express yourself through writing with speech-to-text options and visual storyboarding tools."
+    },
+
+    // Science
+    "biology": {
+      title: "Biology Basics",
+      description: "Explore life sciences with tactile diagrams, 3D models, and descriptive audio."
+    },
+    "chemistry": {
+      title: "Chemistry Concepts",
+      description: "Understand chemical reactions through interactive simulations and accessible lab experiments."
+    },
+    "physics": {
+      title: "Physics Principles",
+      description: "Discover the laws of motion and energy through accessible experiments and simulations."
+    },
+
+    // Social Studies
+    "history": {
+      title: "World History",
+      description: "Journey through historical events with timelines, audio narratives, and tactile maps."
+    },
+    "civics": {
+      title: "Civics and Government",
+      description: "Learn about government systems with simplified text, sign language videos, and interactive quizzes."
+    },
+
+    // Life Skills
+    "money-management": {
+      title: "Money Management",
+      description: "Develop financial literacy with practical exercises and accessible banking simulations."
+    },
+    "social-skills": {
+      title: "Social Skills Development",
+      description: "Build interpersonal skills through role-playing scenarios and social story videos."
+    },
+
+    // Additional Courses
+    "data-science": {
+      title: "Data Science Masters Course",
+      description: "Become a complete Data Scientist with our comprehensive program covering Python, ML, AI, and more. Learn from industry experts and get job-ready."
+    },
+    "web-dev": {
+      title: "Full Stack Web Development",
+      description: "Learn HTML, CSS, JavaScript, Node.js, and modern frontend frameworks to become a job-ready full-stack web developer."
+    }
+  };
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const courseKey = params.get("course");
+
+    const titleElement = document.getElementById("course-title");
+    const descriptionElement = document.getElementById("course-description");
+
+    if (courseKey && courseContent[courseKey]) {
+      titleElement.innerText = courseContent[courseKey].title;
+      descriptionElement.innerText = courseContent[courseKey].description;
+    } else {
+      titleElement.innerText = "Course Not Found";
+      descriptionElement.innerText = "Sorry, we couldn't load the course details.";
+    }
+  });
+    </script>
+    </body>
+    </html>

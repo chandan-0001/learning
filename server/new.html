@@ -1,0 +1,2662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessibility Features</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .features {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-size: 2.2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: #7f8c8d;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+
+        /* PDF Reader styles */
+        .pdf-reader-controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .pdf-reader-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .pdf-reader-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .pdf-reader-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Speech to text specific styles */
+        .stt-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .stt-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stt-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .start-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .stop-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .copy-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .clear-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .stt-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .stt-status {
+            text-align: center;
+            font-weight: bold;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .listening {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .not-listening {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .stt-output {
+            min-height: 200px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 1.2rem;
+            overflow-y: auto;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            line-height: 1.7;
+        }
+
+        /* Upload modal styles */
+        .upload-btn {
+            display: block;
+            margin: 1.5rem auto 0;
+            padding: 0.7rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 1.5rem;
+            color: #3498db;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Language translation styles */
+        .translation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .language-selectors {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .language-selector {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            background-color: white;
+            transition: border 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .translation-output {
+            min-height: 200px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 1.2rem;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .translation-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Video player styles */
+        .video-container {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .video-description {
+            margin-top: 0.8rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        .home-button {
+            display: inline-block;
+            padding: 12px 24px;
+            margin-bottom: 20px;
+            background-color: #FF9EAA;
+            /* Soft pink */
+            color: white;
+            border: none;
+            border-radius: 50px;
+            /* Rounded edges */
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .home-button:hover {
+            background-color: #FF7B8B;
+            /* Darker pink on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .home-button:active {
+            transform: translateY(0);
+        }
+
+        .home-button:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 158, 170, 0.5);
+            /* Focus indicator */
+        }
+
+        /* Previous styles remain the same until the Visual Customization section */
+
+        /* Visual Customization Modal Styles */
+        .visual-custom-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .visual-custom-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .visual-option {
+            margin-bottom: 1.5rem;
+        }
+
+        .visual-option h3 {
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+        }
+
+        .option-group {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .visual-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .visual-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .visual-btn.active {
+            outline: 2px solid #3498db;
+            outline-offset: 2px;
+        }
+
+        /* Color options */
+        .color-btn[data-color="default"] {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .color-btn[data-color="dark"] {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .color-btn[data-color="high-contrast"] {
+            background-color: black;
+            color: yellow;
+        }
+
+        .color-btn[data-color="blue-light"] {
+            background-color: #e6f2ff;
+            color: #003366;
+        }
+
+        /* Advanced options */
+        .advanced-options {
+            margin-top: 1.5rem;
+        }
+
+        .advanced-option {
+            margin-bottom: 1rem;
+        }
+
+        .advanced-option label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .reset-btn {
+            padding: 0.7rem 1.2rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Applied styles */
+        .color-default {
+            background-color: #f5f7fa !important;
+            color: #333 !important;
+        }
+
+        .color-dark {
+            background-color: #222 !important;
+            color: #eee !important;
+        }
+
+        .color-high-contrast {
+            background-color: black !important;
+            color: yellow !important;
+        }
+
+        .color-blue-light {
+            background-color: #e6f2ff !important;
+            color: #003366 !important;
+        }
+
+        .font-default {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+
+        .font-arial {
+            font-family: Arial, sans-serif !important;
+        }
+
+        .font-times {
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .font-comic {
+            font-family: 'Comic Sans MS', cursive, sans-serif !important;
+        }
+
+        .font-open-dyslexic {
+            font-family: 'OpenDyslexic', sans-serif !important;
+        }
+
+        .size-small {
+            font-size: 14px !important;
+        }
+
+        .size-medium {
+            font-size: 16px !important;
+        }
+
+        .size-large {
+            font-size: 18px !important;
+        }
+
+        .size-xlarge {
+            font-size: 20px !important;
+        }
+
+        .highlight-links a {
+            background-color: yellow !important;
+            padding: 2px 4px !important;
+            text-decoration: underline !important;
+        }
+
+        @media (max-width: 768px) {
+            .option-group {
+                flex-direction: column;
+            }
+
+            .visual-btn {
+                width: 100%;
+            }
+        }
+
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .features {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2c3e50;
+            font-size: 2.2rem;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #3498db;
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            font-size: 1.3rem;
+        }
+
+        .feature-card p {
+            color: #666;
+            margin-bottom: 0;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 700px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-btn {
+            float: right;
+            cursor: pointer;
+            font-size: 1.8rem;
+            color: #7f8c8d;
+            transition: color 0.2s;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+
+        /* PDF Reader styles */
+        .pdf-reader-controls {
+            margin-top: 1.5rem;
+            display: flex;
+            justify-content: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .pdf-reader-btn {
+            padding: 0.6rem 1.2rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .pdf-reader-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .pdf-reader-btn:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .visual-custom-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .visual-option {
+            margin-bottom: 1rem;
+        }
+
+        .visual-option h3 {
+            margin-bottom: 0.8rem;
+            color: #2c3e50;
+        }
+
+        .color-options,
+        .font-options,
+        .size-options {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .color-btn,
+        .font-btn,
+        .size-btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .color-btn:hover,
+        .font-btn:hover,
+        .size-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .color-btn[data-color="default"] {
+            background-color: #f5f7fa;
+            color: #333;
+        }
+
+        .color-btn[data-color="dark"] {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        .color-btn[data-color="high-contrast"] {
+            background-color: black;
+            color: yellow;
+        }
+
+        .color-btn[data-color="blue-light"] {
+            background-color: #e6f2ff;
+            color: #003366;
+        }
+
+        .advanced-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .advanced-options label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+        }
+
+        .reset-btn {
+            padding: 0.7rem 1.2rem;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: #c0392b;
+        }
+
+        /* Color scheme classes */
+        .color-default {
+            background-color: #f5f7fa !important;
+            color: #333 !important;
+        }
+
+        .color-dark {
+            background-color: #222 !important;
+            color: #eee !important;
+        }
+
+        .color-high-contrast {
+            background-color: black !important;
+            color: yellow !important;
+        }
+
+        .color-blue-light {
+            background-color: #e6f2ff !important;
+            color: #003366 !important;
+        }
+
+        /* Font family classes */
+        .font-default {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+        }
+
+        .font-arial {
+            font-family: Arial, sans-serif !important;
+        }
+
+        .font-times {
+            font-family: 'Times New Roman', Times, serif !important;
+        }
+
+        .font-comic {
+            font-family: 'Comic Sans MS', cursive, sans-serif !important;
+        }
+
+        .font-open-dyslexic {
+            font-family: 'OpenDyslexic', sans-serif !important;
+        }
+
+        /* Text size classes */
+        .size-small {
+            font-size: 14px !important;
+        }
+
+        .size-medium {
+            font-size: 16px !important;
+        }
+
+        .size-large {
+            font-size: 18px !important;
+        }
+
+        .size-xlarge {
+            font-size: 20px !important;
+        }
+
+        /* Highlight links */
+        .highlight-links a {
+            background-color: yellow !important;
+            padding: 2px 4px !important;
+            text-decoration: underline !important;
+        }
+
+        @media (max-width: 768px) {
+
+            .color-options,
+            .font-options,
+            .size-options {
+                flex-direction: column;
+            }
+
+            .color-btn,
+            .font-btn,
+            .size-btn {
+                width: 100%;
+            }
+        }
+
+        /* Speech to text specific styles */
+        .stt-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .stt-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .stt-btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .start-btn {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .stop-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .copy-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .clear-btn {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .stt-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .stt-status {
+            text-align: center;
+            font-weight: bold;
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .listening {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .not-listening {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .stt-output {
+            min-height: 200px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 1.2rem;
+            overflow-y: auto;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            line-height: 1.7;
+        }
+
+        /* Upload modal styles */
+        .upload-btn {
+            display: block;
+            margin: 1.5rem auto 0;
+            padding: 0.7rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 1.5rem;
+            color: #3498db;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        /* Language translation styles */
+        .translation-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .language-selectors {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .language-selector {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .language-selector label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            background-color: white;
+            transition: border 0.2s;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .translation-output {
+            min-height: 200px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            padding: 1.2rem;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            overflow-y: auto;
+            line-height: 1.7;
+        }
+
+        .translation-controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Video player styles */
+        .video-container {
+            margin-top: 1.5rem;
+            display: none;
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .video-description {
+            margin-top: 0.8rem;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-selectors {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+
+
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .language-selectors {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.12.313/pdf.min.js"></script>
+    <!-- Google Translate API (mock implementation) -->
+    <script>
+        // Mock translation function - in a real app, you would use a real API
+        function mockTranslate(text, targetLang) {
+            // Simple mock translations
+            const translations = {
+                'hi': {
+                    'hello': 'नमस्ते',
+                    'thank you': 'धन्यवाद',
+                    'good': 'अच्छा',
+                    'how are you': 'आप कैसे हैं',
+                    'please': 'कृपया'
+                },
+                'es': {
+                    'hello': 'hola',
+                    'thank you': 'gracias',
+                    'good': 'bueno',
+                    'how are you': 'cómo estás',
+                    'please': 'por favor'
+                },
+                'fr': {
+                    'hello': 'bonjour',
+                    'thank you': 'merci',
+                    'good': 'bon',
+                    'how are you': 'comment allez-vous',
+                    'please': 's\'il vous plaît'
+                }
+            };
+
+            if (targetLang === 'en') return text;
+
+            let translated = text;
+            for (const [eng, trans] of Object.entries(translations[targetLang] || {})) {
+                translated = translated.replace(new RegExp(eng, 'gi'), trans);
+            }
+            return translated;
+        }
+    </script>
+</head>
+
+<body>
+    <section class="features">
+        <button onclick="window.location.href='index.html'" class="home-button">
+            🏠 Home Page
+        </button>
+        <h2 class="section-title">Accessibility Features</h2>
+        <div class="feature-grid">
+            <!-- Screen Reader Compatible -->
+            <div class="feature-card" data-feature="screen-reader">
+                <div class="feature-icon">🔊</div>
+                <h3>Screen Reader Compatible</h3>
+                <p>All content is optimized for screen readers and assistive technologies to ensure information is
+                    accessible to visually impaired students.</p>
+            </div>
+
+            <!-- Speech to Text -->
+            <div class="feature-card" data-feature="speech-to-text">
+                <div class="feature-icon">✍️</div>
+                <h3>Speech-to-Text</h3>
+                <p>Built-in dictation tools allow students to convert speech to text for assignments and communication.
+                </p>
+            </div>
+
+            <!-- Sign Language Support -->
+            <div class="feature-card" data-feature="sign-language">
+                <div class="feature-icon">👋</div>
+                <h3>Language Translator</h3>
+                <p>Real-time speech translation between multiple languages for inclusive communication.</p>
+            </div>
+
+            <!-- Visual Customization Card (Card 4) -->
+            <div class="feature-card" data-feature="visual-custom">
+                <div class="feature-icon">🎨</div>
+                <h3>Visual Customization</h3>
+                <p>Adjust contrast, font size, and color schemes to accommodate visual processing differences.</p>
+            </div>
+
+            <!-- Visual Customization Modal -->
+            <div class="visual-custom-modal" id="visualCustomModal">
+                <div class="visual-custom-content">
+                    <span class="close-btn" id="closeVisualCustomModal">&times;</span>
+                    <h2>Visual Customization</h2>
+
+                    <div class="visual-option">
+                        <h3>Color Scheme</h3>
+                        <div class="option-group">
+                            <button class="visual-btn color-btn" data-color="default">Default</button>
+                            <button class="visual-btn color-btn" data-color="dark">Dark Mode</button>
+                            <button class="visual-btn color-btn" data-color="high-contrast">High Contrast</button>
+                            <button class="visual-btn color-btn" data-color="blue-light">Blue Light</button>
+                        </div>
+                    </div>
+
+                    <div class="visual-option">
+                        <h3>Font Family</h3>
+                        <div class="option-group">
+                            <button class="visual-btn font-btn" data-font="default">Default</button>
+                            <button class="visual-btn font-btn" data-font="arial">Arial</button>
+                            <button class="visual-btn font-btn" data-font="times">Times New Roman</button>
+                            <button class="visual-btn font-btn" data-font="comic">Comic Sans</button>
+                        </div>
+                    </div>
+
+                    <div class="visual-option">
+                        <h3>Text Size</h3>
+                        <div class="option-group">
+                            <button class="visual-btn size-btn" data-size="small">Small</button>
+                            <button class="visual-btn size-btn" data-size="medium">Medium</button>
+                            <button class="visual-btn size-btn" data-size="large">Large</button>
+                            <button class="visual-btn size-btn" data-size="xlarge">Extra Large</button>
+                        </div>
+                    </div>
+
+                    <div class="advanced-options">
+                        <h3>Advanced Settings</h3>
+                        <div class="advanced-option">
+                            <label>
+                                <input type="checkbox" id="highlightLinks"> Highlight Links
+                            </label>
+                        </div>
+                        <div class="advanced-option">
+                            <label>
+                                <input type="checkbox" id="textToSpeech"> Auto-Read Content
+                            </label>
+                        </div>
+                        <button class="reset-btn" id="resetVisualSettings">Reset All Settings</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alternative Input Methods -->
+            <div class="feature-card" data-feature="alt-input">
+                <div class="feature-icon">⌨️</div>
+                <h3>Alternative Input Methods</h3>
+                <p>Compatible with various input devices including eye-tracking and switch access technologies.</p>
+            </div>
+
+            <!-- Adaptive Learning Paths -->
+            <div class="feature-card" data-feature="adaptive-learning">
+                <div class="feature-icon">🔄</div>
+                <h3>Adaptive Learning Paths</h3>
+                <p>Content adjusts based on individual learning styles and needs to provide personalized education.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Screen Reader Modal -->
+    <div class="modal" id="screenReaderModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeScreenReaderModal">&times;</span>
+            <h2>Upload PDF for Screen Reader</h2>
+            <p>Please upload a PDF file to be read aloud:</p>
+            <input type="file" id="pdfInput" accept=".pdf">
+            <button class="upload-btn" id="uploadPdfBtn">Upload and Read</button>
+            <div class="loading" id="pdfLoadingIndicator">Processing PDF... Please wait.</div>
+            <div id="pdfContent" style="margin-top: 1.5rem; display: none;">
+                <h3>PDF Content:</h3>
+                <div id="pdfText" style="white-space: pre-wrap; margin-bottom: 1.5rem;"></div>
+                <div class="pdf-reader-controls">
+                    <button class="pdf-reader-btn" id="playPdfBtn">Play</button>
+                    <button class="pdf-reader-btn" id="pausePdfBtn" disabled>Pause</button>
+                    <button class="pdf-reader-btn" id="stopPdfBtn" disabled>Stop</button>
+                    <button class="pdf-reader-btn" id="forwardPdfBtn" disabled>+10 sec</button>
+                    <button class="pdf-reader-btn" id="backwardPdfBtn" disabled>-10 sec</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Speech to Text Modal -->
+    <div class="modal" id="speechToTextModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeSpeechToTextModal">&times;</span>
+            <h2>Speech to Text Listener</h2>
+            <div class="stt-container">
+                <div class="stt-status not-listening">Microphone is ready</div>
+                <div class="stt-output" id="transcriptOutput"></div>
+                <div class="stt-controls">
+                    <button class="stt-btn start-btn" id="startListeningBtn">Start Listening</button>
+                    <button class="stt-btn stop-btn" id="stopListeningBtn" disabled>Stop Listening</button>
+                    <button class="stt-btn copy-btn" id="copyTranscriptBtn">Copy Text</button>
+                    <button class="stt-btn clear-btn" id="clearTranscriptBtn">Clear</button>
+                </div>
+                <div id="sttInstructions" style="margin-top: 1.5rem;">
+                    <h3>How to use:</h3>
+                    <ol>
+                        <li>Click "Start Listening" to begin</li>
+                        <li>Speak clearly into your microphone</li>
+                        <li>Click "Stop Listening" when finished</li>
+                        <li>Copy the text to use in your work</li>
+                    </ol>
+                    <p><strong>Note:</strong> For best results, use in a quiet environment with a good quality
+                        microphone.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Language Translator Modal -->
+    <div class="modal" id="signLanguageModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeSignLanguageModal">&times;</span>
+            <h2>Language Translator</h2>
+            <div class="translation-container">
+                <div class="language-selectors">
+                    <div class="language-selector">
+                        <label for="inputLanguage">Input Language:</label>
+                        <select id="inputLanguage">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                    <div class="language-selector">
+                        <label for="outputLanguage">Output Language:</label>
+                        <select id="outputLanguage">
+                            <option value="en">English</option>
+                            <option value="hi">Hindi</option>
+                            <option value="es">Spanish</option>
+                            <option value="fr">French</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="stt-status not-listening">Ready to listen</div>
+                <div class="translation-output" id="translationOutput"></div>
+
+                <div class="translation-controls">
+                    <button class="stt-btn start-btn" id="startTranslationBtn">Start Listening</button>
+                    <button class="stt-btn stop-btn" id="stopTranslationBtn" disabled>Stop Listening</button>
+                    <button class="stt-btn copy-btn" id="copyTranslationBtn">Copy Text</button>
+                    <button class="stt-btn clear-btn" id="clearTranslationBtn">Clear</button>
+                </div>
+
+                <div id="translationInstructions" style="margin-top: 1.5rem;">
+                    <h3>How to use:</h3>
+                    <ol>
+                        <li>Select input and output languages</li>
+                        <li>Click "Start Listening" and speak</li>
+                        <li>Your speech will be translated automatically</li>
+                        <li>Click "Stop Listening" when finished</li>
+                    </ol>
+                    <p><strong>Note:</strong> Translation quality depends on your microphone and speech clarity.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // General elements
+            const featureCards = document.querySelectorAll('.feature-card');
+            const speechSynth = window.speechSynthesis;
+            let currentUtterance = null;
+            let speechStartTime = 0;
+            let isPaused = false;
+            let pauseTime = 0;
+
+            // Screen Reader Modal elements
+            const screenReaderModal = document.getElementById('screenReaderModal');
+            const closeScreenReaderModal = document.getElementById('closeScreenReaderModal');
+            const pdfInput = document.getElementById('pdfInput');
+            const uploadPdfBtn = document.getElementById('uploadPdfBtn');
+            const pdfLoadingIndicator = document.getElementById('pdfLoadingIndicator');
+            const pdfText = document.getElementById('pdfText');
+            const pdfContent = document.getElementById('pdfContent');
+            const playPdfBtn = document.getElementById('playPdfBtn');
+            const pausePdfBtn = document.getElementById('pausePdfBtn');
+            const stopPdfBtn = document.getElementById('stopPdfBtn');
+            const forwardPdfBtn = document.getElementById('forwardPdfBtn');
+            const backwardPdfBtn = document.getElementById('backwardPdfBtn');
+
+            // Speech to Text Modal elements
+            const speechToTextModal = document.getElementById('speechToTextModal');
+            const closeSpeechToTextModal = document.getElementById('closeSpeechToTextModal');
+            const startListeningBtn = document.getElementById('startListeningBtn');
+            const stopListeningBtn = document.getElementById('stopListeningBtn');
+            const copyTranscriptBtn = document.getElementById('copyTranscriptBtn');
+            const clearTranscriptBtn = document.getElementById('clearTranscriptBtn');
+            const transcriptOutput = document.getElementById('transcriptOutput');
+            const sttStatus = document.querySelector('#speechToTextModal .stt-status');
+
+            // Language Translator Modal elements
+            const signLanguageModal = document.getElementById('signLanguageModal');
+            const closeSignLanguageModal = document.getElementById('closeSignLanguageModal');
+            const startTranslationBtn = document.getElementById('startTranslationBtn');
+            const stopTranslationBtn = document.getElementById('stopTranslationBtn');
+            const copyTranslationBtn = document.getElementById('copyTranslationBtn');
+            const clearTranslationBtn = document.getElementById('clearTranslationBtn');
+            const translationOutput = document.getElementById('translationOutput');
+            const inputLanguage = document.getElementById('inputLanguage');
+            const outputLanguage = document.getElementById('outputLanguage');
+            const translationStatus = document.querySelector('#signLanguageModal .stt-status');
+
+            // Speech recognition setup
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            let recognition;
+            let translationRecognition;
+            let isListening = false;
+            let isTranslating = false;
+            let fullText = '';
+
+            // Initialize speech recognition if available
+            if (SpeechRecognition) {
+                // For Speech-to-Text
+                recognition = new SpeechRecognition();
+                recognition.continuous = true;
+                recognition.interimResults = true;
+                recognition.lang = 'en-US';
+
+                recognition.onstart = function () {
+                    isListening = true;
+                    sttStatus.textContent = "Listening... Speak now";
+                    sttStatus.classList.remove('not-listening');
+                    sttStatus.classList.add('listening');
+                    startListeningBtn.disabled = true;
+                    stopListeningBtn.disabled = false;
+                };
+
+                recognition.onend = function () {
+                    if (isListening) {
+                        recognition.start(); // Restart if still listening
+                    } else {
+                        sttStatus.textContent = "Ready to listen";
+                        sttStatus.classList.remove('listening');
+                        sttStatus.classList.add('not-listening');
+                        startListeningBtn.disabled = false;
+                        stopListeningBtn.disabled = true;
+                    }
+                };
+
+                recognition.onresult = function (event) {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript + ' ';
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+
+                    transcriptOutput.innerHTML = finalTranscript + '<i>' + interimTranscript + '</i>';
+                };
+
+                recognition.onerror = function (event) {
+                    console.error('Speech recognition error', event.error);
+                    sttStatus.textContent = "Error: " + event.error;
+                    sttStatus.classList.remove('listening');
+                    sttStatus.classList.add('not-listening');
+                    isListening = false;
+                    startListeningBtn.disabled = false;
+                    stopListeningBtn.disabled = true;
+                };
+
+                // For Language Translator
+                translationRecognition = new SpeechRecognition();
+                translationRecognition.continuous = true;
+                translationRecognition.interimResults = true;
+                translationRecognition.lang = 'en-US';
+
+                translationRecognition.onstart = function () {
+                    isTranslating = true;
+                    translationStatus.textContent = "Listening... Speak now";
+                    translationStatus.classList.remove('not-listening');
+                    translationStatus.classList.add('listening');
+                    startTranslationBtn.disabled = true;
+                    stopTranslationBtn.disabled = false;
+                };
+
+                translationRecognition.onend = function () {
+                    if (isTranslating) {
+                        translationRecognition.start(); // Restart if still listening
+                    } else {
+                        translationStatus.textContent = "Ready to listen";
+                        translationStatus.classList.remove('listening');
+                        translationStatus.classList.add('not-listening');
+                        startTranslationBtn.disabled = false;
+                        stopTranslationBtn.disabled = true;
+                    }
+                };
+
+                translationRecognition.onresult = function (event) {
+                    let interimTranscript = '';
+                    let finalTranscript = '';
+
+                    for (let i = event.resultIndex; i < event.results.length; i++) {
+                        const transcript = event.results[i][0].transcript;
+                        if (event.results[i].isFinal) {
+                            finalTranscript += transcript;
+                            // Translate the text
+                            const translated = mockTranslate(transcript, outputLanguage.value);
+                            translationOutput.innerHTML += `<div class="translation-line">
+                                <div class="original">${transcript}</div>
+                                <div class="translated">${translated}</div>
+                            </div>`;
+                        } else {
+                            interimTranscript += transcript;
+                        }
+                    }
+
+                    // Show interim results
+                    if (interimTranscript) {
+                        translationOutput.innerHTML += '<i>' + interimTranscript + '</i><br>';
+                    }
+                };
+
+                translationRecognition.onerror = function (event) {
+                    console.error('Translation recognition error', event.error);
+                    translationStatus.textContent = "Error: " + event.error;
+                    translationStatus.classList.remove('listening');
+                    translationStatus.classList.add('not-listening');
+                    isTranslating = false;
+                    startTranslationBtn.disabled = false;
+                    stopTranslationBtn.disabled = true;
+                };
+            } else {
+                // Disable buttons if speech recognition not supported
+                startListeningBtn.disabled = true;
+                stopListeningBtn.disabled = true;
+                sttStatus.textContent = "Speech recognition not supported in your browser";
+
+                startTranslationBtn.disabled = true;
+                stopTranslationBtn.disabled = true;
+                if (translationStatus) {
+                    translationStatus.textContent = "Speech recognition not supported in your browser";
+                }
+            }
+
+            // Feature card click handlers
+            featureCards.forEach(card => {
+                card.addEventListener('dblclick', function () {
+                    const feature = this.getAttribute('data-feature');
+
+                    switch (feature) {
+                        case 'screen-reader':
+                            screenReaderModal.style.display = 'flex';
+                            break;
+                        case 'speech-to-text':
+                            speechToTextModal.style.display = 'flex';
+                            break;
+                        case 'sign-language':
+                            signLanguageModal.style.display = 'flex';
+                            break;
+                        case 'visual-custom':
+                            alert('Visual customization options would appear here');
+                            break;
+                        case 'alt-input':
+                            alert('Alternative input method configuration would appear here');
+                            break;
+                        case 'adaptive-learning':
+                            alert('Adaptive learning path settings would appear here');
+                            break;
+                    }
+                });
+
+                // Single click to read content
+                card.addEventListener('click', function () {
+                    const cardText = this.innerText;
+                    if (speechSynth.speaking) {
+                        speechSynth.cancel();
+                    }
+                    const utterance = new SpeechSynthesisUtterance(cardText);
+                    speechSynth.speak(utterance);
+                });
+            });
+
+            // Screen Reader Modal functions
+            closeScreenReaderModal.addEventListener('click', function () {
+                screenReaderModal.style.display = 'none';
+                pdfInput.value = '';
+                pdfContent.style.display = 'none';
+                if (speechSynth.speaking) {
+                    speechSynth.cancel();
+                }
+                resetPdfControls();
+            });
+
+            uploadPdfBtn.addEventListener('click', async function () {
+                const file = pdfInput.files[0];
+                if (!file) {
+                    alert('Please select a PDF file first.');
+                    return;
+                }
+
+                pdfLoadingIndicator.style.display = 'block';
+                pdfContent.style.display = 'none';
+                resetPdfControls();
+
+                try {
+                    const pdf = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise;
+                    fullText = '';
+
+                    for (let i = 1; i <= pdf.numPages; i++) {
+                        const page = await pdf.getPage(i);
+                        const textContent = await page.getTextContent();
+                        const pageText = textContent.items.map(item => item.str).join(' ');
+                        fullText += pageText + '\n\n';
+                    }
+
+                    pdfText.textContent = fullText;
+                    pdfContent.style.display = 'block';
+                    enablePdfControls();
+                } catch (error) {
+                    console.error('Error extracting PDF text:', error);
+                    pdfText.textContent = `Error processing PDF: ${error.message}`;
+                    pdfContent.style.display = 'block';
+                } finally {
+                    pdfLoadingIndicator.style.display = 'none';
+                }
+            });
+
+            function resetPdfControls() {
+                playPdfBtn.disabled = false;
+                pausePdfBtn.disabled = true;
+                stopPdfBtn.disabled = true;
+                forwardPdfBtn.disabled = true;
+                backwardPdfBtn.disabled = true;
+            }
+
+            function enablePdfControls() {
+                playPdfBtn.disabled = false;
+                pausePdfBtn.disabled = true;
+                stopPdfBtn.disabled = true;
+                forwardPdfBtn.disabled = false;
+                backwardPdfBtn.disabled = false;
+            }
+
+            function readText(text) {
+                if (speechSynth.speaking) {
+                    speechSynth.cancel();
+                }
+
+                currentUtterance = new SpeechSynthesisUtterance(text);
+                currentUtterance.onboundary = function (event) {
+                    if (event.name === 'word') {
+                        speechStartTime = event.elapsedTime / 1000;
+                    }
+                };
+
+                currentUtterance.onend = function () {
+                    resetPdfControls();
+                };
+
+                speechSynth.speak(currentUtterance);
+                playPdfBtn.disabled = true;
+                pausePdfBtn.disabled = false;
+                stopPdfBtn.disabled = false;
+            }
+
+            playPdfBtn.addEventListener('click', function () {
+                if (isPaused) {
+                    // Resume from pause
+                    speechSynth.resume();
+                    isPaused = false;
+                    playPdfBtn.disabled = true;
+                    pausePdfBtn.disabled = false;
+                } else {
+                    // Start fresh
+                    readText(fullText);
+                }
+            });
+
+            pausePdfBtn.addEventListener('click', function () {
+                speechSynth.pause();
+                isPaused = true;
+                pauseTime = speechStartTime;
+                playPdfBtn.disabled = false;
+                pausePdfBtn.disabled = true;
+            });
+
+            stopPdfBtn.addEventListener('click', function () {
+                speechSynth.cancel();
+                resetPdfControls();
+                isPaused = false;
+            });
+
+            forwardPdfBtn.addEventListener('click', function () {
+                if (!currentUtterance) return;
+
+                const newStartTime = Math.min(speechStartTime + 10, fullText.length / 20); // Rough estimate
+                const textToRead = fullText.substring(findPositionAtTime(newStartTime));
+                readText(textToRead);
+            });
+
+            backwardPdfBtn.addEventListener('click', function () {
+                if (!currentUtterance) return;
+
+                const newStartTime = Math.max(0, speechStartTime - 10);
+                const textToRead = fullText.substring(findPositionAtTime(newStartTime));
+                readText(textToRead);
+            });
+
+            function findPositionAtTime(timeInSeconds) {
+                // Simple estimation - in a real app you'd want a more accurate method
+                const wordsPerSecond = 2; // Average speaking rate
+                const wordsToSkip = Math.floor(timeInSeconds * wordsPerSecond);
+                const words = fullText.split(/\s+/);
+
+                if (wordsToSkip >= words.length) return fullText.length;
+
+                let charCount = 0;
+                for (let i = 0; i < wordsToSkip; i++) {
+                    charCount += words[i].length + 1; // +1 for the space
+                }
+
+                return Math.min(charCount, fullText.length);
+            }
+
+            // Speech to Text Modal functions
+            closeSpeechToTextModal.addEventListener('click', function () {
+                speechToTextModal.style.display = 'none';
+                if (recognition && isListening) {
+                    recognition.stop();
+                    isListening = false;
+                }
+            });
+
+            startListeningBtn.addEventListener('click', function () {
+                if (recognition) {
+                    recognition.start();
+                } else {
+                    alert('Speech recognition is not supported in your browser. Try Chrome or Edge.');
+                }
+            });
+
+            stopListeningBtn.addEventListener('click', function () {
+                if (recognition) {
+                    isListening = false;
+                    recognition.stop();
+                }
+            });
+
+            copyTranscriptBtn.addEventListener('click', function () {
+                const textToCopy = transcriptOutput.textContent || transcriptOutput.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('Transcript copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy text. Please try again.');
+                });
+            });
+
+            clearTranscriptBtn.addEventListener('click', function () {
+                transcriptOutput.innerHTML = '';
+            });
+
+            // Language Translator Modal functions
+            closeSignLanguageModal.addEventListener('click', function () {
+                signLanguageModal.style.display = 'none';
+                if (translationRecognition && isTranslating) {
+                    translationRecognition.stop();
+                    isTranslating = false;
+                }
+            });
+
+            startTranslationBtn.addEventListener('click', function () {
+                if (!translationRecognition) {
+                    alert('Speech recognition is not supported in your browser. Try Chrome or Edge.');
+                    return;
+                }
+
+                // Set the recognition language based on input selection
+                translationRecognition.lang = inputLanguage.value;
+                translationRecognition.start();
+            });
+
+            stopTranslationBtn.addEventListener('click', function () {
+                if (translationRecognition) {
+                    isTranslating = false;
+                    translationRecognition.stop();
+                }
+            });
+
+            copyTranslationBtn.addEventListener('click', function () {
+                const textToCopy = translationOutput.textContent || translationOutput.innerText;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert('Translation copied to clipboard!');
+                }).catch(err => {
+                    console.error('Failed to copy text: ', err);
+                    alert('Failed to copy text. Please try again.');
+                });
+            });
+
+            clearTranslationBtn.addEventListener('click', function () {
+                translationOutput.innerHTML = '';
+            });
+
+            // Update recognition language when input language changes
+            inputLanguage.addEventListener('change', function () {
+                if (translationRecognition && isTranslating) {
+                    translationRecognition.stop();
+                    translationRecognition.lang = this.value;
+                    translationRecognition.start();
+                }
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function (e) {
+                if (e.target === screenReaderModal) {
+                    screenReaderModal.style.display = 'none';
+                    pdfInput.value = '';
+                    pdfContent.style.display = 'none';
+                    if (speechSynth.speaking) {
+                        speechSynth.cancel();
+                    }
+                    resetPdfControls();
+                }
+
+                if (e.target === speechToTextModal) {
+                    speechToTextModal.style.display = 'none';
+                    if (recognition && isListening) {
+                        recognition.stop();
+                        isListening = false;
+                    }
+                }
+
+                if (e.target === signLanguageModal) {
+                    signLanguageModal.style.display = 'none';
+                    if (translationRecognition && isTranslating) {
+                        translationRecognition.stop();
+                        isTranslating = false;
+                    }
+                }
+            });
+
+            // Visual Customization Elements
+            const visualCustomModal = document.getElementById('visualCustomModal');
+            const closeVisualCustomModal = document.getElementById('closeVisualCustomModal');
+            const colorButtons = document.querySelectorAll('.color-btn');
+            const fontButtons = document.querySelectorAll('.font-btn');
+            const sizeButtons = document.querySelectorAll('.size-btn');
+            const highlightLinksCheckbox = document.getElementById('highlightLinks');
+            const textToSpeechCheckbox = document.getElementById('textToSpeech');
+            const resetVisualSettingsBtn = document.getElementById('resetVisualSettings');
+
+            // Update the feature card click handler for visual customization
+            document.querySelector('.feature-card[data-feature="visual-custom"]').addEventListener('click', function (e) {
+                // Single click - read card content
+                const cardText = this.innerText;
+                if (speechSynth.speaking) {
+                    speechSynth.cancel();
+                }
+                const utterance = new SpeechSynthesisUtterance(cardText);
+                speechSynth.speak(utterance);
+            });
+
+            document.querySelector('.feature-card[data-feature="visual-custom"]').addEventListener('dblclick', function (e) {
+                // Double click - open visual customization modal
+                visualCustomModal.style.display = 'flex';
+
+                // Load saved settings
+                const savedColor = localStorage.getItem('colorScheme') || 'default';
+                const savedFont = localStorage.getItem('fontFamily') || 'default';
+                const savedSize = localStorage.getItem('textSize') || 'medium';
+
+                // Highlight selected buttons
+                colorButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.color-btn[data-color="${savedColor}"]`).classList.add('active');
+
+                fontButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.font-btn[data-font="${savedFont}"]`).classList.add('active');
+
+                sizeButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector(`.size-btn[data-size="${savedSize}"]`).classList.add('active');
+
+                highlightLinksCheckbox.checked = localStorage.getItem('highlightLinks') === 'true';
+                textToSpeechCheckbox.checked = localStorage.getItem('textToSpeech') === 'true';
+            });
+
+            // Close modal
+            closeVisualCustomModal.addEventListener('click', function () {
+                visualCustomModal.style.display = 'none';
+            });
+
+            // Color scheme buttons
+            colorButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const colorScheme = this.getAttribute('data-color');
+                    applyColorScheme(colorScheme);
+                    localStorage.setItem('colorScheme', colorScheme);
+
+                    // Update active state
+                    colorButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Font family buttons
+            fontButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const fontFamily = this.getAttribute('data-font');
+                    applyFontFamily(fontFamily);
+                    localStorage.setItem('fontFamily', fontFamily);
+
+                    // Update active state
+                    fontButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Text size buttons
+            sizeButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const textSize = this.getAttribute('data-size');
+                    applyTextSize(textSize);
+                    localStorage.setItem('textSize', textSize);
+
+                    // Update active state
+                    sizeButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Highlight links checkbox
+            highlightLinksCheckbox.addEventListener('change', function () {
+                if (this.checked) {
+                    document.body.classList.add('highlight-links');
+                    localStorage.setItem('highlightLinks', 'true');
+                } else {
+                    document.body.classList.remove('highlight-links');
+                    localStorage.setItem('highlightLinks', 'false');
+                }
+            });
+
+            // Text to speech checkbox
+            textToSpeechCheckbox.addEventListener('change', function () {
+                localStorage.setItem('textToSpeech', this.checked ? 'true' : 'false');
+            });
+
+            // Reset all settings
+            resetVisualSettingsBtn.addEventListener('click', function () {
+                // Reset to default values
+                applyColorScheme('default');
+                applyFontFamily('default');
+                applyTextSize('medium');
+                document.body.classList.remove('highlight-links');
+
+                // Update checkboxes
+                highlightLinksCheckbox.checked = false;
+                textToSpeechCheckbox.checked = false;
+
+                // Update active buttons
+                colorButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.color-btn[data-color="default"]').classList.add('active');
+
+                fontButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.font-btn[data-font="default"]').classList.add('active');
+
+                sizeButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.size-btn[data-size="medium"]').classList.add('active');
+
+                // Clear localStorage
+                localStorage.removeItem('colorScheme');
+                localStorage.removeItem('fontFamily');
+                localStorage.removeItem('textSize');
+                localStorage.removeItem('highlightLinks');
+                localStorage.removeItem('textToSpeech');
+            });
+
+            // Apply color scheme
+            function applyColorScheme(scheme) {
+                // Remove all color classes first
+                document.body.classList.remove('color-default', 'color-dark', 'color-high-contrast', 'color-blue-light');
+
+                // Add the selected class
+                if (scheme !== 'default') {
+                    document.body.classList.add(`color-${scheme}`);
+                }
+            }
+
+            // Apply font family
+            function applyFontFamily(font) {
+                // Remove all font classes first
+                document.body.classList.remove('font-default', 'font-arial', 'font-times', 'font-comic', 'font-open-dyslexic');
+
+                // Add the selected class
+                if (font !== 'default') {
+                    document.body.classList.add(`font-${font}`);
+                }
+            }
+
+            // Apply text size
+            function applyTextSize(size) {
+                // Remove all size classes first
+                document.body.classList.remove('size-small', 'size-medium', 'size-large', 'size-xlarge');
+
+                // Add the selected class
+                if (size !== 'medium') {
+                    document.body.classList.add(`size-${size}`);
+                }
+            }
+
+            // Load saved settings on page load
+            (function loadVisualSettings() {
+                const savedColor = localStorage.getItem('colorScheme') || 'default';
+                const savedFont = localStorage.getItem('fontFamily') || 'default';
+                const savedSize = localStorage.getItem('textSize') || 'medium';
+
+                applyColorScheme(savedColor);
+                applyFontFamily(savedFont);
+                applyTextSize(savedSize);
+
+                if (localStorage.getItem('highlightLinks') === 'true') {
+                    document.body.classList.add('highlight-links');
+                    highlightLinksCheckbox.checked = true;
+                }
+
+                if (localStorage.getItem('textToSpeech') === 'true' && window.speechSynthesis) {
+                    // Auto-read the main content if enabled
+                    const mainContent = document.querySelector('main') || document.body;
+                    const utterance = new SpeechSynthesisUtterance(mainContent.textContent);
+                    window.speechSynthesis.speak(utterance);
+                }
+            })();
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function (e) {
+                if (e.target === visualCustomModal) {
+                    visualCustomModal.style.display = 'none';
+                }
+            });
+
+            // Rest of your JavaScript remains the same
+
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // General elements
+                const featureCards = document.querySelectorAll('.feature-card');
+                const speechSynth = window.speechSynthesis;
+                let currentUtterance = null;
+                let speechStartTime = 0;
+                let isPaused = false;
+                let pauseTime = 0;
+
+                // Screen Reader Modal elements
+                const screenReaderModal = document.getElementById('screenReaderModal');
+                const closeScreenReaderModal = document.getElementById('closeScreenReaderModal');
+                const pdfInput = document.getElementById('pdfInput');
+                const uploadPdfBtn = document.getElementById('uploadPdfBtn');
+                const pdfLoadingIndicator = document.getElementById('pdfLoadingIndicator');
+                const pdfText = document.getElementById('pdfText');
+                const pdfContent = document.getElementById('pdfContent');
+                const playPdfBtn = document.getElementById('playPdfBtn');
+                const pausePdfBtn = document.getElementById('pausePdfBtn');
+                const stopPdfBtn = document.getElementById('stopPdfBtn');
+                const forwardPdfBtn = document.getElementById('forwardPdfBtn');
+                const backwardPdfBtn = document.getElementById('backwardPdfBtn');
+
+                // Speech to Text Modal elements
+                const speechToTextModal = document.getElementById('speechToTextModal');
+                const closeSpeechToTextModal = document.getElementById('closeSpeechToTextModal');
+                const startListeningBtn = document.getElementById('startListeningBtn');
+                const stopListeningBtn = document.getElementById('stopListeningBtn');
+                const copyTranscriptBtn = document.getElementById('copyTranscriptBtn');
+                const clearTranscriptBtn = document.getElementById('clearTranscriptBtn');
+                const transcriptOutput = document.getElementById('transcriptOutput');
+                const sttStatus = document.querySelector('#speechToTextModal .stt-status');
+
+                // Language Translator Modal elements
+                const signLanguageModal = document.getElementById('signLanguageModal');
+                const closeSignLanguageModal = document.getElementById('closeSignLanguageModal');
+                const startTranslationBtn = document.getElementById('startTranslationBtn');
+                const stopTranslationBtn = document.getElementById('stopTranslationBtn');
+                const copyTranslationBtn = document.getElementById('copyTranslationBtn');
+                const clearTranslationBtn = document.getElementById('clearTranslationBtn');
+                const translationOutput = document.getElementById('translationOutput');
+                const inputLanguage = document.getElementById('inputLanguage');
+                const outputLanguage = document.getElementById('outputLanguage');
+                const translationStatus = document.querySelector('#signLanguageModal .stt-status');
+
+                // Speech recognition setup
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                let recognition;
+                let translationRecognition;
+                let isListening = false;
+                let isTranslating = false;
+                let fullText = '';
+
+                // Initialize speech recognition if available
+                if (SpeechRecognition) {
+                    // For Speech-to-Text
+                    recognition = new SpeechRecognition();
+                    recognition.continuous = true;
+                    recognition.interimResults = true;
+                    recognition.lang = 'en-US';
+
+                    recognition.onstart = function () {
+                        isListening = true;
+                        sttStatus.textContent = "Listening... Speak now";
+                        sttStatus.classList.remove('not-listening');
+                        sttStatus.classList.add('listening');
+                        startListeningBtn.disabled = true;
+                        stopListeningBtn.disabled = false;
+                    };
+
+                    recognition.onend = function () {
+                        if (isListening) {
+                            recognition.start(); // Restart if still listening
+                        } else {
+                            sttStatus.textContent = "Ready to listen";
+                            sttStatus.classList.remove('listening');
+                            sttStatus.classList.add('not-listening');
+                            startListeningBtn.disabled = false;
+                            stopListeningBtn.disabled = true;
+                        }
+                    };
+
+                    recognition.onresult = function (event) {
+                        let interimTranscript = '';
+                        let finalTranscript = '';
+
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            const transcript = event.results[i][0].transcript;
+                            if (event.results[i].isFinal) {
+                                finalTranscript += transcript + ' ';
+                            } else {
+                                interimTranscript += transcript;
+                            }
+                        }
+
+                        transcriptOutput.innerHTML = finalTranscript + '<i>' + interimTranscript + '</i>';
+                    };
+
+                    recognition.onerror = function (event) {
+                        console.error('Speech recognition error', event.error);
+                        sttStatus.textContent = "Error: " + event.error;
+                        sttStatus.classList.remove('listening');
+                        sttStatus.classList.add('not-listening');
+                        isListening = false;
+                        startListeningBtn.disabled = false;
+                        stopListeningBtn.disabled = true;
+                    };
+
+                    // For Language Translator
+                    translationRecognition = new SpeechRecognition();
+                    translationRecognition.continuous = true;
+                    translationRecognition.interimResults = true;
+                    translationRecognition.lang = 'en-US';
+
+                    translationRecognition.onstart = function () {
+                        isTranslating = true;
+                        translationStatus.textContent = "Listening... Speak now";
+                        translationStatus.classList.remove('not-listening');
+                        translationStatus.classList.add('listening');
+                        startTranslationBtn.disabled = true;
+                        stopTranslationBtn.disabled = false;
+                    };
+
+                    translationRecognition.onend = function () {
+                        if (isTranslating) {
+                            translationRecognition.start(); // Restart if still listening
+                        } else {
+                            translationStatus.textContent = "Ready to listen";
+                            translationStatus.classList.remove('listening');
+                            translationStatus.classList.add('not-listening');
+                            startTranslationBtn.disabled = false;
+                            stopTranslationBtn.disabled = true;
+                        }
+                    };
+
+                    translationRecognition.onresult = function (event) {
+                        let interimTranscript = '';
+                        let finalTranscript = '';
+
+                        for (let i = event.resultIndex; i < event.results.length; i++) {
+                            const transcript = event.results[i][0].transcript;
+                            if (event.results[i].isFinal) {
+                                finalTranscript += transcript;
+                                // Translate the text
+                                const translated = mockTranslate(transcript, outputLanguage.value);
+                                translationOutput.innerHTML += `<div class="translation-line">
+                                <div class="original">${transcript}</div>
+                                <div class="translated">${translated}</div>
+                            </div>`;
+                            } else {
+                                interimTranscript += transcript;
+                            }
+                        }
+
+                        // Show interim results
+                        if (interimTranscript) {
+                            translationOutput.innerHTML += '<i>' + interimTranscript + '</i><br>';
+                        }
+                    };
+
+                    translationRecognition.onerror = function (event) {
+                        console.error('Translation recognition error', event.error);
+                        translationStatus.textContent = "Error: " + event.error;
+                        translationStatus.classList.remove('listening');
+                        translationStatus.classList.add('not-listening');
+                        isTranslating = false;
+                        startTranslationBtn.disabled = false;
+                        stopTranslationBtn.disabled = true;
+                    };
+                } else {
+                    // Disable buttons if speech recognition not supported
+                    startListeningBtn.disabled = true;
+                    stopListeningBtn.disabled = true;
+                    sttStatus.textContent = "Speech recognition not supported in your browser";
+
+                    startTranslationBtn.disabled = true;
+                    stopTranslationBtn.disabled = true;
+                    if (translationStatus) {
+                        translationStatus.textContent = "Speech recognition not supported in your browser";
+                    }
+                }
+
+                // Feature card click handlers
+                featureCards.forEach(card => {
+                    card.addEventListener('dblclick', function () {
+                        const feature = this.getAttribute('data-feature');
+
+                        switch (feature) {
+                            case 'screen-reader':
+                                screenReaderModal.style.display = 'flex';
+                                break;
+                            case 'speech-to-text':
+                                speechToTextModal.style.display = 'flex';
+                                break;
+                            case 'sign-language':
+                                signLanguageModal.style.display = 'flex';
+                                break;
+                            case 'visual-custom':
+                                alert('Visual customization options would appear here');
+                                break;
+                            case 'alt-input':
+                                alert('Alternative input method configuration would appear here');
+                                break;
+                            case 'adaptive-learning':
+                                alert('Adaptive learning path settings would appear here');
+                                break;
+                        }
+                    });
+
+                    // Single click to read content
+                    card.addEventListener('click', function () {
+                        const cardText = this.innerText;
+                        if (speechSynth.speaking) {
+                            speechSynth.cancel();
+                        }
+                        const utterance = new SpeechSynthesisUtterance(cardText);
+                        speechSynth.speak(utterance);
+                    });
+                });
+
+                // Visual Customization Modal elements
+                const visualCustomModal = document.getElementById('visualCustomModal');
+                const closeVisualCustomModal = document.getElementById('closeVisualCustomModal');
+                const colorButtons = document.querySelectorAll('.color-btn');
+                const fontButtons = document.querySelectorAll('.font-btn');
+                const sizeButtons = document.querySelectorAll('.size-btn');
+                const highlightLinksCheckbox = document.getElementById('highlightLinks');
+                const textToSpeechCheckbox = document.getElementById('textToSpeech');
+                const resetVisualSettingsBtn = document.getElementById('resetVisualSettings');
+
+                // Update the feature card click handler to include visual customization
+                document.querySelector('.feature-card[data-feature="visual-custom"]').addEventListener('click', function () {
+                    // Single click - apply quick settings
+                    const currentColor = localStorage.getItem('colorScheme') || 'default';
+                    const currentFont = localStorage.getItem('fontFamily') || 'default';
+                    const currentSize = localStorage.getItem('textSize') || 'medium';
+
+                    applyColorScheme(currentColor);
+                    applyFontFamily(currentFont);
+                    applyTextSize(currentSize);
+
+                    if (localStorage.getItem('highlightLinks') === 'true') {
+                        document.body.classList.add('highlight-links');
+                        highlightLinksCheckbox.checked = true;
+                    }
+                });
+
+                document.querySelector('.feature-card[data-feature="visual-custom"]').addEventListener('dblclick', function () {
+                    visualCustomModal.style.display = 'flex';
+
+                    // Load saved settings
+                    const savedColor = localStorage.getItem('colorScheme') || 'default';
+                    const savedFont = localStorage.getItem('fontFamily') || 'default';
+                    const savedSize = localStorage.getItem('textSize') || 'medium';
+
+                    // Highlight selected buttons
+                    document.querySelector(`.color-btn[data-color="${savedColor}"]`).classList.add('active');
+                    document.querySelector(`.font-btn[data-font="${savedFont}"]`).classList.add('active');
+                    document.querySelector(`.size-btn[data-size="${savedSize}"]`).classList.add('active');
+
+                    highlightLinksCheckbox.checked = localStorage.getItem('highlightLinks') === 'true';
+                    textToSpeechCheckbox.checked = localStorage.getItem('textToSpeech') === 'true';
+                });
+
+                // Close modal
+                closeVisualCustomModal.addEventListener('click', function () {
+                    visualCustomModal.style.display = 'none';
+                });
+
+                // Color scheme buttons
+                colorButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const colorScheme = this.getAttribute('data-color');
+                        applyColorScheme(colorScheme);
+                        localStorage.setItem('colorScheme', colorScheme);
+
+                        // Update active state
+                        colorButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+
+                // Font family buttons
+                fontButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const fontFamily = this.getAttribute('data-font');
+                        applyFontFamily(fontFamily);
+                        localStorage.setItem('fontFamily', fontFamily);
+
+                        // Update active state
+                        fontButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+
+                // Text size buttons
+                sizeButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const textSize = this.getAttribute('data-size');
+                        applyTextSize(textSize);
+                        localStorage.setItem('textSize', textSize);
+
+                        // Update active state
+                        sizeButtons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+                    });
+                });
+
+                // Highlight links checkbox
+                highlightLinksCheckbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        document.body.classList.add('highlight-links');
+                        localStorage.setItem('highlightLinks', 'true');
+                    } else {
+                        document.body.classList.remove('highlight-links');
+                        localStorage.setItem('highlightLinks', 'false');
+                    }
+                });
+
+                // Text to speech checkbox
+                textToSpeechCheckbox.addEventListener('change', function () {
+                    localStorage.setItem('textToSpeech', this.checked ? 'true' : 'false');
+                });
+
+                // Reset all settings
+                resetVisualSettingsBtn.addEventListener('click', function () {
+                    // Reset to default values
+                    applyColorScheme('default');
+                    applyFontFamily('default');
+                    applyTextSize('medium');
+                    document.body.classList.remove('highlight-links');
+
+                    // Update checkboxes
+                    highlightLinksCheckbox.checked = false;
+                    textToSpeechCheckbox.checked = false;
+
+                    // Update active buttons
+                    colorButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.color-btn[data-color="default"]').classList.add('active');
+
+                    fontButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.font-btn[data-font="default"]').classList.add('active');
+
+                    sizeButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelector('.size-btn[data-size="medium"]').classList.add('active');
+
+                    // Clear localStorage
+                    localStorage.removeItem('colorScheme');
+                    localStorage.removeItem('fontFamily');
+                    localStorage.removeItem('textSize');
+                    localStorage.removeItem('highlightLinks');
+                    localStorage.removeItem('textToSpeech');
+                });
+
+                // Apply color scheme
+                function applyColorScheme(scheme) {
+                    // Remove all color classes first
+                    document.body.classList.remove('color-default', 'color-dark', 'color-high-contrast', 'color-blue-light');
+
+                    // Add the selected class
+                    if (scheme !== 'default') {
+                        document.body.classList.add(`color-${scheme}`);
+                    }
+                }
+
+                // Apply font family
+                function applyFontFamily(font) {
+                    // Remove all font classes first
+                    document.body.classList.remove('font-default', 'font-arial', 'font-times', 'font-comic', 'font-open-dyslexic');
+
+                    // Add the selected class
+                    if (font !== 'default') {
+                        document.body.classList.add(`font-${font}`);
+                    }
+                }
+
+                // Apply text size
+                function applyTextSize(size) {
+                    // Remove all size classes first
+                    document.body.classList.remove('size-small', 'size-medium', 'size-large', 'size-xlarge');
+
+                    // Add the selected class
+                    if (size !== 'medium') {
+                        document.body.classList.add(`size-${size}`);
+                    }
+                }
+
+                // Close modal when clicking outside
+                window.addEventListener('click', function (e) {
+                    if (e.target === visualCustomModal) {
+                        visualCustomModal.style.display = 'none';
+                    }
+                });
+
+                // Load saved settings on page load
+                document.addEventListener('DOMContentLoaded', function () {
+                    const savedColor = localStorage.getItem('colorScheme') || 'default';
+                    const savedFont = localStorage.getItem('fontFamily') || 'default';
+                    const savedSize = localStorage.getItem('textSize') || 'medium';
+
+                    applyColorScheme(savedColor);
+                    applyFontFamily(savedFont);
+                    applyTextSize(savedSize);
+
+                    if (localStorage.getItem('highlightLinks') === 'true') {
+                        document.body.classList.add('highlight-links');
+                    }
+
+                    if (localStorage.getItem('textToSpeech') === 'true' && window.speechSynthesis) {
+                        // Auto-read the main content if enabled
+                        const mainContent = document.querySelector('main') || document.body;
+                        const utterance = new SpeechSynthesisUtterance(mainContent.textContent);
+                        window.speechSynthesis.speak(utterance);
+                    }
+                });
+
+                // Screen Reader Modal functions
+                closeScreenReaderModal.addEventListener('click', function () {
+                    screenReaderModal.style.display = 'none';
+                    pdfInput.value = '';
+                    pdfContent.style.display = 'none';
+                    if (speechSynth.speaking) {
+                        speechSynth.cancel();
+                    }
+                    resetPdfControls();
+                });
+
+                uploadPdfBtn.addEventListener('click', async function () {
+                    const file = pdfInput.files[0];
+                    if (!file) {
+                        alert('Please select a PDF file first.');
+                        return;
+                    }
+
+                    pdfLoadingIndicator.style.display = 'block';
+                    pdfContent.style.display = 'none';
+                    resetPdfControls();
+
+                    try {
+                        const pdf = await pdfjsLib.getDocument(URL.createObjectURL(file)).promise;
+                        fullText = '';
+
+                        for (let i = 1; i <= pdf.numPages; i++) {
+                            const page = await pdf.getPage(i);
+                            const textContent = await page.getTextContent();
+                            const pageText = textContent.items.map(item => item.str).join(' ');
+                            fullText += pageText + '\n\n';
+                        }
+
+                        pdfText.textContent = fullText;
+                        pdfContent.style.display = 'block';
+                        enablePdfControls();
+                    } catch (error) {
+                        console.error('Error extracting PDF text:', error);
+                        pdfText.textContent = `Error processing PDF: ${error.message}`;
+                        pdfContent.style.display = 'block';
+                    } finally {
+                        pdfLoadingIndicator.style.display = 'none';
+                    }
+                });
+
+                function resetPdfControls() {
+                    playPdfBtn.disabled = false;
+                    pausePdfBtn.disabled = true;
+                    stopPdfBtn.disabled = true;
+                    forwardPdfBtn.disabled = true;
+                    backwardPdfBtn.disabled = true;
+                }
+
+                function enablePdfControls() {
+                    playPdfBtn.disabled = false;
+                    pausePdfBtn.disabled = true;
+                    stopPdfBtn.disabled = true;
+                    forwardPdfBtn.disabled = false;
+                    backwardPdfBtn.disabled = false;
+                }
+
+                function readText(text) {
+                    if (speechSynth.speaking) {
+                        speechSynth.cancel();
+                    }
+
+                    currentUtterance = new SpeechSynthesisUtterance(text);
+                    currentUtterance.onboundary = function (event) {
+                        if (event.name === 'word') {
+                            speechStartTime = event.elapsedTime / 1000;
+                        }
+                    };
+
+                    currentUtterance.onend = function () {
+                        resetPdfControls();
+                    };
+
+                    speechSynth.speak(currentUtterance);
+                    playPdfBtn.disabled = true;
+                    pausePdfBtn.disabled = false;
+                    stopPdfBtn.disabled = false;
+                }
+
+                playPdfBtn.addEventListener('click', function () {
+                    if (isPaused) {
+                        // Resume from pause
+                        speechSynth.resume();
+                        isPaused = false;
+                        playPdfBtn.disabled = true;
+                        pausePdfBtn.disabled = false;
+                    } else {
+                        // Start fresh
+                        readText(fullText);
+                    }
+                });
+
+                pausePdfBtn.addEventListener('click', function () {
+                    speechSynth.pause();
+                    isPaused = true;
+                    pauseTime = speechStartTime;
+                    playPdfBtn.disabled = false;
+                    pausePdfBtn.disabled = true;
+                });
+
+                stopPdfBtn.addEventListener('click', function () {
+                    speechSynth.cancel();
+                    resetPdfControls();
+                    isPaused = false;
+                });
+
+                forwardPdfBtn.addEventListener('click', function () {
+                    if (!currentUtterance) return;
+
+                    const newStartTime = Math.min(speechStartTime + 10, fullText.length / 20); // Rough estimate
+                    const textToRead = fullText.substring(findPositionAtTime(newStartTime));
+                    readText(textToRead);
+                });
+
+                backwardPdfBtn.addEventListener('click', function () {
+                    if (!currentUtterance) return;
+
+                    const newStartTime = Math.max(0, speechStartTime - 10);
+                    const textToRead = fullText.substring(findPositionAtTime(newStartTime));
+                    readText(textToRead);
+                });
+
+                function findPositionAtTime(timeInSeconds) {
+                    // Simple estimation - in a real app you'd want a more accurate method
+                    const wordsPerSecond = 2; // Average speaking rate
+                    const wordsToSkip = Math.floor(timeInSeconds * wordsPerSecond);
+                    const words = fullText.split(/\s+/);
+
+                    if (wordsToSkip >= words.length) return fullText.length;
+
+                    let charCount = 0;
+                    for (let i = 0; i < wordsToSkip; i++) {
+                        charCount += words[i].length + 1; // +1 for the space
+                    }
+
+                    return Math.min(charCount, fullText.length);
+                }
+
+                // Speech to Text Modal functions
+                closeSpeechToTextModal.addEventListener('click', function () {
+                    speechToTextModal.style.display = 'none';
+                    if (recognition && isListening) {
+                        recognition.stop();
+                        isListening = false;
+                    }
+                });
+
+                startListeningBtn.addEventListener('click', function () {
+                    if (recognition) {
+                        recognition.start();
+                    } else {
+                        alert('Speech recognition is not supported in your browser. Try Chrome or Edge.');
+                    }
+                });
+
+                stopListeningBtn.addEventListener('click', function () {
+                    if (recognition) {
+                        isListening = false;
+                        recognition.stop();
+                    }
+                });
+
+                copyTranscriptBtn.addEventListener('click', function () {
+                    const textToCopy = transcriptOutput.textContent || transcriptOutput.innerText;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        alert('Transcript copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        alert('Failed to copy text. Please try again.');
+                    });
+                });
+
+                clearTranscriptBtn.addEventListener('click', function () {
+                    transcriptOutput.innerHTML = '';
+                });
+
+                // Language Translator Modal functions
+                closeSignLanguageModal.addEventListener('click', function () {
+                    signLanguageModal.style.display = 'none';
+                    if (translationRecognition && isTranslating) {
+                        translationRecognition.stop();
+                        isTranslating = false;
+                    }
+                });
+
+                startTranslationBtn.addEventListener('click', function () {
+                    if (!translationRecognition) {
+                        alert('Speech recognition is not supported in your browser. Try Chrome or Edge.');
+                        return;
+                    }
+
+                    // Set the recognition language based on input selection
+                    translationRecognition.lang = inputLanguage.value;
+                    translationRecognition.start();
+                });
+
+                stopTranslationBtn.addEventListener('click', function () {
+                    if (translationRecognition) {
+                        isTranslating = false;
+                        translationRecognition.stop();
+                    }
+                });
+
+                copyTranslationBtn.addEventListener('click', function () {
+                    const textToCopy = translationOutput.textContent || translationOutput.innerText;
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        alert('Translation copied to clipboard!');
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                        alert('Failed to copy text. Please try again.');
+                    });
+                });
+
+                clearTranslationBtn.addEventListener('click', function () {
+                    translationOutput.innerHTML = '';
+                });
+
+                // Update recognition language when input language changes
+                inputLanguage.addEventListener('change', function () {
+                    if (translationRecognition && isTranslating) {
+                        translationRecognition.stop();
+                        translationRecognition.lang = this.value;
+                        translationRecognition.start();
+                    }
+                });
+
+                // Close modals when clicking outside
+                window.addEventListener('click', function (e) {
+                    if (e.target === screenReaderModal) {
+                        screenReaderModal.style.display = 'none';
+                        pdfInput.value = '';
+                        pdfContent.style.display = 'none';
+                        if (speechSynth.speaking) {
+                            speechSynth.cancel();
+                        }
+                        resetPdfControls();
+                    }
+
+                    if (e.target === speechToTextModal) {
+                        speechToTextModal.style.display = 'none';
+                        if (recognition && isListening) {
+                            recognition.stop();
+                            isListening = false;
+                        }
+                    }
+
+                    if (e.target === signLanguageModal) {
+                        signLanguageModal.style.display = 'none';
+                        if (translationRecognition && isTranslating) {
+                            translationRecognition.stop();
+                            isTranslating = false;
+                        }
+                    }
+                });
+            });
+
+        });
+
+    </script>
+</body>
+
+</html>

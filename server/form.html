@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    
+        .container {
+            background-color: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 40px 50px;
+            max-width: 500px;
+            width: 100%;
+        }
+    
+        h2 {
+            color: #343a40;
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+    
+        .form-group {
+            margin-bottom: 20px;
+        }
+    
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 8px;
+            display: block;
+        }
+    
+        .form-control {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px 12px;
+            transition: all 0.3s ease-in-out;
+            font-size: 16px;
+        }
+    
+        .form-control:focus {
+            border-color: #6a11cb;
+            box-shadow: 0 0 0 0.2rem rgba(106, 17, 203, 0.25);
+        }
+    
+        .btn-primary {
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            width: 100%;
+            transition: background 0.3s ease;
+        }
+    
+        .btn-primary:hover {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+        }
+    
+        .form-text {
+            color: #6c757d;
+            font-size: 14px;
+        }
+    
+        select.form-control[multiple] {
+            height: auto;
+            min-height: 100px;
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Create Account</h2>
+        <form id="signup-form" action="signup.php" method="POST">
+            <div class="form-group">
+                <label for="name" class="form-label">Full Name</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+                <small id="password-help" class="form-text text-muted">Password must be at least 8 characters with uppercase, lowercase, number, and special character.</small>
+            </div>
+            <div class="form-group">
+                <label for="type" class="form-label">I am a:</label>
+                <select id="type" name="type" class="form-control" required>
+                    <option value="">Select an option</option>
+                    <option value="student">Student</option>
+                    <option value="teacher">Teacher</option>
+                    <option value="parent">Parent/Guardian</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="accessibility" class="form-label">Accessibility Needs (Optional)</label>
+                <select id="accessibility" name="accessibility[]" class="form-control" multiple>
+                    <option value="visual">Visual Impairment</option>
+                    <option value="hearing">Hearing Impairment</option>
+                    <option value="motor">Motor Skills Limitation</option>
+                    <option value="cognitive">Cognitive/Learning Difference</option>
+                    <option value="other">Other</option>
+                </select>
+                <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple options.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
